@@ -1,4 +1,5 @@
 # go-config
+[![CircleCI](https://circleci.com/gh/pcelvng/go-config.svg?style=svg)](https://circleci.com/gh/pcelvng/go-config)
 
 Effortless, stateful go configuration.
 

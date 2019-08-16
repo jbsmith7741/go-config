@@ -117,6 +117,17 @@ func SetField(value reflect.Value, s string, sField reflect.StructField) error {
 		}
 
 		value.Set(slice)
+	case reflect.Array:
+		s = strings.Trim(s, "[]") // trim brackets for bracket support.
+		vals := strings.Split(s, ",")
+		if value.Len() != len(vals) {
+			return fmt.Errorf("cannot set array of different lengths got %d want %d", value.Len(), len(vals))
+		}
+		for i, v := range vals {
+			if err := SetField(value.Index(i), v, sField); err != nil {
+				return err
+			}
+		}
 
 	// structs as values are simply ignored. They don't map cleanly for environment variables.
 	case reflect.Struct:
