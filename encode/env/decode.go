@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/iancoleman/strcase"
+
+	"github.com/pcelvng/go-config/encode"
 )
 
 var (
@@ -96,80 +98,8 @@ func populate(prefix string, v interface{}) error {
 		// if the value type is a struct or struct pointer then recurse.
 		switch field.Kind() {
 		// explicity ignored list of types.
-		case reflect.Array, reflect.Func, reflect.Chan, reflect.Complex64, reflect.Complex128, reflect.Interface, reflect.Map:
+		case reflect.Func, reflect.Chan, reflect.Complex64, reflect.Complex128, reflect.Interface, reflect.Map:
 			continue
-		case reflect.Struct:
-			// time.Time special struct case
-			if field.Type().String() == "time.Time" {
-				// check for 'fmt' tag.
-				timeFmt := vStruct.Type().Field(i).Tag.Get(fmtTag)
-
-				// get env value
-				envVal := os.Getenv(name)
-
-				// if no value found then don't set because it will
-				// overwrite possible defaults.
-				if envVal == "" {
-					continue
-				}
-
-				timeFmt, err := setTime(field, envVal, timeFmt)
-				if err != nil {
-					return fmt.Errorf("'%s' from '%s' cannot be set to %s (%s); using '%v' time format",
-						envVal, name, vStruct.Type().Field(i).Name, field.Type(), timeFmt)
-				}
-
-				continue
-			}
-
-			// get a pointer and recurse
-			err := populate(name, field.Addr().Interface())
-			if err != nil {
-				return err
-			}
-		case reflect.Ptr:
-			// if it's a ptr to a struct then recurse otherwise fallthrough
-			if field.IsNil() {
-				z := reflect.New(field.Type().Elem())
-				field.Set(z)
-			}
-
-			// check if it's pointing to a struct
-			if reflect.Indirect(field).Kind() == reflect.Struct {
-				if reflect.Indirect(field).Type().String() == "time.Time" {
-					// check for 'fmt' tag.
-					timeFmt := vStruct.Type().Field(i).Tag.Get(fmtTag)
-
-					// get env value
-					envVal := os.Getenv(name)
-
-					// if no value found then don't set because it will
-					// overwrite possible defaults.
-					if envVal == "" {
-						continue
-					}
-
-					timeFmt, err := setTime(reflect.Indirect(field), envVal, timeFmt)
-					if err != nil {
-						return fmt.Errorf("'%s' from '%s' cannot be set to %s (%s); using '%v' time format",
-							envVal, name, vStruct.Type().Field(i).Name, field.Type(), timeFmt)
-					}
-
-					continue
-				}
-
-				// recurse on ptr struct
-				err := populate(name, field.Interface())
-				if err != nil {
-					return err
-				}
-
-				continue
-			}
-
-			// fallthrough since the underlying type is not
-			// a struct.
-			fallthrough
 		default:
 			// Validate "omitprefix" usage.
 			// Cannot be used on non-struct field types.
@@ -185,9 +115,8 @@ func populate(prefix string, v interface{}) error {
 			if envVal == "" {
 				continue
 			}
-
 			// set value to field.
-			if err := setField(field, envVal); err != nil {
+			if err := encode.SetField(field, envVal, vStruct.Type().Field(i)); err != nil {
 				return fmt.Errorf("'%s' from '%s' cannot be set to %s (%s)", envVal, name, vStruct.Type().Field(i).Name, field.Type())
 			}
 		}

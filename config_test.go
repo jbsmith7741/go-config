@@ -20,6 +20,12 @@ type testStruct struct {
 
 	Float32 float32 `flag:"float32"`
 	Float64 float64 `flag:"float64"`
+	Pointer *childStruct
+}
+
+type childStruct struct {
+	Count  *int
+	Amount *float64
 }
 
 func TestGoConfig_Load(t *testing.T) {
