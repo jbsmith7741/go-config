@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/pcelvng/go-config/encode/env"
-	"github.com/pcelvng/go-config/encode/file"
+	"github.com/hydronica/go-config/encode/env"
+	"github.com/hydronica/go-config/encode/file"
+	flg "github.com/hydronica/go-config/encode/flag"
 	"github.com/pkg/errors"
-	flg "github.com/pcelvng/go-config/encode/flag"
 )
 
 // goConfig should probably be private so it can only be set through the new method.
@@ -30,7 +30,7 @@ type goConfig struct {
 
 	// special flags
 	showVersion *bool
-	appName string // self proclaimed app name.
+	appName     string // self proclaimed app name.
 	showConfig  *bool
 	version     string
 	description string

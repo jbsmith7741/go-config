@@ -1,6 +1,4 @@
-module github.com/pcelvng/go-config
-
-go 1.11
+module github.com/hydronica/go-config
 
 require (
 	github.com/davecgh/go-spew v1.1.0
@@ -12,3 +10,5 @@ require (
 	github.com/stretchr/testify v1.3.0
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+go 1.13

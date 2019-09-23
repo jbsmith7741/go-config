@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hydronica/go-config/encode"
 	"github.com/iancoleman/strcase"
 	"github.com/jbsmith7741/go-tools/appenderr"
-	"github.com/pcelvng/go-config/encode"
 )
 
 const (

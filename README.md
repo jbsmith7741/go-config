@@ -22,7 +22,7 @@ All configuration options are controlled via struct tags. A 'struct' is the prin
 
 Get the library:
 ```sh
-> go get github.com/pcelvng/go-config
+> go get github.com/hydronica/go-config
 ```
 
 Use in your application:
@@ -32,7 +32,7 @@ package main
 import (
     "os"
     
-    "github.com/pcelvng/go-config"
+    "github.com/hydronica/go-config"
 )
 
 func main() {
@@ -280,7 +280,7 @@ import (
     "log"
     "os"
     
-    "github.com/pcelvng/go-config"
+    "github.com/hydronica/go-config"
 )
 
 var hlp = `

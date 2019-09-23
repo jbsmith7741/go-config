@@ -10,7 +10,7 @@ import (
 
 	"github.com/iancoleman/strcase"
 
-	"github.com/pcelvng/go-config/encode"
+	"github.com/hydronica/go-config/encode"
 )
 
 var (
